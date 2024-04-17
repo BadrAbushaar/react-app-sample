@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/bytestorm5.github.io/React-Sample-App/static/css/main.1e8453c1.css",
-    "main.js": "/bytestorm5.github.io/React-Sample-App/static/js/main.cb12db64.js",
-    "static/media/tips.csv": "/bytestorm5.github.io/React-Sample-App/static/media/tips.43007c7e472255eef549.csv",
-    "index.html": "/bytestorm5.github.io/React-Sample-App/index.html",
-    "main.1e8453c1.css.map": "/bytestorm5.github.io/React-Sample-App/static/css/main.1e8453c1.css.map",
-    "main.cb12db64.js.map": "/bytestorm5.github.io/React-Sample-App/static/js/main.cb12db64.js.map"
+    "main.css": "/React-Sample-App/static/css/main.1e8453c1.css",
+    "main.js": "/React-Sample-App/static/js/main.d0dce34d.js",
+    "static/media/tips.csv": "/React-Sample-App/static/media/tips.43007c7e472255eef549.csv",
+    "index.html": "/React-Sample-App/index.html",
+    "main.1e8453c1.css.map": "/React-Sample-App/static/css/main.1e8453c1.css.map",
+    "main.d0dce34d.js.map": "/React-Sample-App/static/js/main.d0dce34d.js.map"
   },
   "entrypoints": [
     "static/css/main.1e8453c1.css",
-    "static/js/main.cb12db64.js"
+    "static/js/main.d0dce34d.js"
   ]
 }

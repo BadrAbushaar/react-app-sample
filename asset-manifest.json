@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/bytestorm5.github.io/react-sample-app/static/css/main.1e8453c1.css",
+    "main.js": "/bytestorm5.github.io/react-sample-app/static/js/main.82d418c3.js",
+    "static/media/tips.csv": "/bytestorm5.github.io/react-sample-app/static/media/tips.43007c7e472255eef549.csv",
+    "index.html": "/bytestorm5.github.io/react-sample-app/index.html",
+    "main.1e8453c1.css.map": "/bytestorm5.github.io/react-sample-app/static/css/main.1e8453c1.css.map",
+    "main.82d418c3.js.map": "/bytestorm5.github.io/react-sample-app/static/js/main.82d418c3.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.1e8453c1.css",
+    "static/js/main.82d418c3.js"
+  ]
+}

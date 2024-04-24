@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import * as d3 from "d3";
 import TIPS from './tips.csv'
 import './App.css';
+import BarChart from "./BarChart";
+import CorrMatrix from "./CorrMatrix";
+import Scatter from "./Scatter";
 
 class App extends Component {
     constructor(props) {
@@ -33,14 +36,14 @@ class App extends Component {
                 </div>
                 <div class="graph-container">
                     <div id="bar-chart">
-                        
+                        <BarChart></BarChart>
                     </div>
-                    <canvas id="corr-matrix">
-
-                    </canvas>
-                    <canvas id="scatter">
-
-                    </canvas>
+                    <div id="corr-matrix">
+                        <CorrMatrix></CorrMatrix>
+                    </div>
+                    <div id="scatter">
+                        <Scatter></Scatter>
+                    </div>
                 </div> 
             </div>
         )

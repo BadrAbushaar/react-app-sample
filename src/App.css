@@ -20,4 +20,21 @@
 #bar-chart { grid-area: 1 / 1 / 2 / 2; }
 #corr-matrix { grid-area: 1 / 2 / 2 / 3; }
 #scatter { grid-area: 2 / 1 / 3 / 3; }
-  
+
+#bar-chart {
+  min-width: 500px;
+}
+
+.widget {
+  border: 1px solid lightgrey;
+  margin: 15px;
+  border-radius: 5px;
+  justify-content: center;
+  text-align: center;
+}
+
+#secondary_select {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}

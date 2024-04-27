@@ -46,13 +46,13 @@ class App extends Component {
                     </select>
                 </div>
                 <div className="graph-container">
-                    <div id="bar-chart">
+                    <div id="bar-chart" className="widget">
                         <BarChart data={data} selected_column={selected_column} />
                     </div>
-                    <div id="corr-matrix">
+                    <div id="corr-matrix" className="widget">
                         <CorrMatrix data={data} />
                     </div>
-                    <div id="scatter">
+                    <div id="scatter" className="widget">
                         <Scatter data={data} selected_column={selected_column} />
                     </div>
                 </div>

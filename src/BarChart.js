@@ -67,8 +67,7 @@ class BarChart extends Component {
             .attr("transform", `translate(0, ${height})`)
             .call(d3.axisBottom(x))
             .selectAll("text")
-            .attr("transform", "translate(-10,0)rotate(-45)")
-            .style("text-anchor", "end");
+                .attr('font-size', 15);
 
         // Add Y axis
         const y = d3.scaleLinear()
@@ -78,14 +77,22 @@ class BarChart extends Component {
             .call(d3.axisLeft(y));
 
         // Bars
-        svg.selectAll("mybar")
+        const bar_iter = svg.selectAll("mybar")
             .data(acc)
-            .join("rect")
+            .join("g")
+        bar_iter.append('rect')
             .attr("x", d => x(d[0]))
             .attr("y", d => y(d[1].avg))
             .attr("width", x.bandwidth())
             .attr("height", d => height - y(d[1].avg))
-            .attr("fill", "#69b3a2")
+            .attr("fill", "#B0B0B0")
+        bar_iter.append('text')
+            .text(d => Math.round(d[1].avg * (10**5))/(10**5))
+            .attr("x", d => x(d[0]) + x.bandwidth() / 2)
+            .attr("y", d => y(d[1].avg)+15)
+            .attr('fill', '#929292')
+            .attr('font-size', 15)
+            .attr("text-anchor", "middle");
     }  
     componentDidMount() {
         this.changeBars('sex')
@@ -95,7 +102,7 @@ class BarChart extends Component {
         this.changeBars(this.state.secondary)
     }
     render() {
-        let cat_columns = ["sex","smoker","day","time","size"]
+        let cat_columns = ["sex","smoker","day","time"]
         return <div id='barchart-inner'>
             <div id='secondary_select'>
                 {cat_columns.map((col, index) => (

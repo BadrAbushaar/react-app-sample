@@ -31,9 +31,22 @@ class Scatter extends Component {
 		const xAxis = d3.axisBottom(x).tickValues(d3.range(0, 51, 10));
 		svg.append("g").attr("transform", `translate(0, ${height})`).call(xAxis);
 
+		svg.append("text")
+			.attr("text-anchor", "middle")
+			.attr("x", width / 2)
+			.attr("y", height + 40)
+			.text(selectedLabels.x);
+
 		const y = d3.scaleLinear().domain([0, 10]).range([height, 0]).nice();
 		const yAxis = d3.axisLeft(y).tickValues(d3.range(2, 11, 2));
 		svg.append("g").call(yAxis);
+
+		svg.append("text")
+			.attr("text-anchor", "middle")
+			.attr("transform", "rotate(-90)")
+			.attr("x", -height / 2)
+			.attr("y", -30)
+			.text(selectedLabels.y);
 
 		const xData = data.map((d) => parseFloat(d[selectedLabels.x]));
 		const yData = data.map((d) => parseFloat(d[selectedLabels.y]));
@@ -47,6 +60,7 @@ class Scatter extends Component {
 			.attr("cy", (d, i) => y(yData[i]))
 			.attr("r", 5)
 			.attr("fill", "#404040");
+			
 	}
 
 	updateScatterplot() {
@@ -58,7 +72,7 @@ class Scatter extends Component {
 		const { selectedLabels } = this.props;
 
 		return (
-			<svg id="scatter-canvas" style={{ background: "#F0F0F0" }}>
+			<svg id="scatter-canvas" style={{ background: "#F0F0F0"} }>
 				<text
 					textAnchor="middle"
 					x={600}

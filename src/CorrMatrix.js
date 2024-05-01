@@ -1,7 +1,6 @@
 // CorrMatrix.js
 import React, { Component } from "react";
-import Plotly from "plotly.js-dist";
-// import * as d3 from "d3";
+import * as d3 from "d3";
 
 class CorrMatrix extends Component {
 	componentDidMount() {
@@ -9,148 +8,85 @@ class CorrMatrix extends Component {
 	}
 
 	plotCorrelationMatrix() {
-		const zValues = [
-			[0.6, 0.49, 1],
-			[0.68, 1, 0.49],
-			[1, 0.68, 0.6],
+		const data = [
+			[1, 0.49, 0.6],
+			[0.49, 1, 0.68],
+			[0.6, 0.68, 1],
 		];
+		const columns = ['total_bill', 'tip', 'size']
 
-		const annotations = [];
-		zValues.forEach((row, rowIndex) => {
-			row.forEach((value, colIndex) => {
-				const annotation = {
-					x: colIndex,
-					y: rowIndex,
-					text: `${value.toFixed(2)}`,
-					showarrow: false,
-					font: {
-						color: value >= 0.5 ? "#000" : "#fff",
-					},
-				};
-				annotations.push(annotation);
-			});
-		});
+		let svg = d3.select("#corr_matrix");
+		const margin = {top: 40, right: 30, bottom: 60, left: 80};
+		const width = +svg.attr("width") - margin.left - margin.right;
+		const height = +svg.attr("height") - margin.top - margin.bottom;
 
-		const trace1 = {
-			z: zValues,
-			dx: 1,
-			dy: 1,
-			x0: 0,
-			y0: 0,
-			scl: [
-				["0", "rgb(0,0,204)"],
-				["0.3", "rgb(102,0,153)"],
-				["0.5", "rgb(204,0,0)"],
-				["0.7", "rgb(255,102,0)"],
-				["1", "rgb(255,255,0)"],
-			],
-			name: "trace 0",
-			type: "heatmap",
-			zmax: 1,
-			zmin: 0.5,
-			zauto: true,
-			hoverinfo: "text",
-			clickmode: "event+select",
-		};
+		svg = svg.append("g").attr("transform", `translate(${margin.left}, ${margin.top})`);
 
-		const data = [trace1];
+		const x = d3.scaleBand()
+          .range([0, width])
+          .domain(data.map((_, i) => `${columns[i]}`))
+          .padding(0.05);
 
-		const layout = {
-			font: {
-				size: 12,
-				color: "#000",
-				family: "Arial, sans-serif",
-			},
-			title: "Correlation Matrix",
-			width: 600,
-			height: 600,
-			xaxis: {
-				type: "linear",
-				dtick: 1,
-				range: [-0.5, 2.5],
-				ticktext: ["total_bill", "tip", "size"],
-				tickvals: [0, 1, 2],
-				title: "",
-				mirror: true,
-				showgrid: true,
-				showline: true,
-				zeroline: false,
-				gridcolor: "#ddd",
-				gridwidth: 1,
-				linecolor: "rgb(207, 226, 243)",
-				linewidth: 8,
-				tickangle: 0,
-				tickcolor: "#000",
-				tickwidth: 1,
-				titlefont: {
-					size: 0,
-					color: "",
-					family: "",
-				},
-			},
-			yaxis: {
-				type: "linear",
-				dtick: 1,
-				range: [-0.5, 2.5],
-				ticktext: ["size", "tip", "total_bill"],
-				tickvals: [2, 1, 0],
-				title: "",
-				mirror: true,
-				showgrid: true,
-				showline: true,
-				zeroline: false,
-				gridcolor: "#ddd",
-				gridwidth: 1,
-				linecolor: "rgb(207, 226, 243)",
-				linewidth: 8,
-				tickangle: 0,
-				tickcolor: "#000",
-				tickwidth: 1,
-				titlefont: {
-					size: 0,
-					color: "",
-					family: "",
-				},
-			},
-			height: 440,
-			legend: {
-				font: {
-					size: 0,
-					color: "",
-					family: "",
-				},
-			},
-			margin: {
-				b: 60,
-				l: 70,
-				r: 200,
-				t: 60,
-				pad: 2,
-				autoexpand: true,
-			},
-			barmode: "stack",
-			boxmode: "overlay",
-			autosize: false,
-			dragmode: "zoom",
-			hovermode: "x",
-			titlefont: {
-				size: 0,
-				color: "",
-				family: "",
-			},
-			separators: ".,",
-			bargroupgap: 0,
-			hidesources: false,
-			plot_bgcolor: "#fff",
-			paper_bgcolor: "#fff",
-			annotations: annotations,
-		};
+		const y = d3.scaleBand()
+			.range([0, height])
+			.domain(data.map((_, i) => `${columns[i]}`))
+			.padding(0.05);
 
-		Plotly.newPlot("plotly-div", data, layout);
+		svg.append("g").call(d3.axisLeft(y))
+			.selectAll('text')
+				.attr('font-size', 15);
 
-		document
-			.getElementById("plotly-div")
-			.on("plotly_click", this.handlePlotClick);
+		svg
+			.append("g")
+			.attr("transform", `translate(0, ${height})`)
+			.call(d3.axisBottom(x))
+			.selectAll("text")
+			.attr("font-size", 15);
+
+		const colorScale = d3.scaleSequential(d3.interpolateRdBu)
+			.domain([-1, 1]);
+
+		svg.append("linearGradient")
+			.attr("id", "linear-gradient")
+			.attr("x1", "0%")
+			.attr("y1", "100%")
+			.attr("x2", "0%")
+			.attr("y2", "0%")
+		.selectAll("stop")
+			.data(colorScale.ticks().map((t, i, n) => ({ offset: `${100*i/n.length}%`, color: colorScale(t) })))
+			.enter().append("stop")
+			.attr("offset", d => d.offset)
+			.attr("stop-color", d => d.color)
+	
+		const legend = svg.append("g")
+			.attr("transform", `translate(${width+10}, 0)`);
+		
+		legend.append("rect")
+        .attr("width", 20)
+        .attr("height", height)
+        .style("fill", "url(#linear-gradient)");
+
+		const row = svg.selectAll(".row")
+			.data(data)
+			.enter().append("g")
+			.attr("transform", (_, i) => `translate(0,${y(`${columns[i]}`)})`);
+
+		let cells = row.selectAll(".cell")
+			.data(d => d)
+			.enter().append('g')
+		cells.append("rect")
+			.attr("x", (_, i) => x(`${columns[i]}`))
+			.attr("width", x.bandwidth())
+			.attr("height", y.bandwidth())
+			.style("fill", d => colorScale(d))
+			.on('click', this.handlePlotClick);
+		cells.append('text')
+		.text(d => d)
+		.attr("x", (_, i) => x(`${columns[i]}`)+x.bandwidth()/2)
+		.attr('y', _ => y.bandwidth()/2)
+		.attr('text-anchor', 'middle')
+		.attr('fill', d => d > 0.75 ? 'white' : 'black')
+		
 	}
 
 	handlePlotClick = (event) => {
@@ -163,9 +99,7 @@ class CorrMatrix extends Component {
 
 	render() {
 		return (
-			<div className="correlation-matrix">
-				<div id="plotly-div"></div>
-			</div>
+			<svg id='corr_matrix' width="500" height="500"></svg >
 		);
 	}
 }

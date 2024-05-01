@@ -1,6 +1,7 @@
 // CorrMatrix.js
 import React, { Component } from "react";
 import * as d3 from "d3";
+import { sec } from "mathjs";
 
 class CorrMatrix extends Component {
 	componentDidMount() {
@@ -69,7 +70,8 @@ class CorrMatrix extends Component {
 		const row = svg.selectAll(".row")
 			.data(data)
 			.enter().append("g")
-			.attr("transform", (_, i) => `translate(0,${y(`${columns[i]}`)})`);
+			.attr("transform", (_, i) => `translate(0,${y(`${columns[i]}`)})`)
+			.attr('primary-data', (_, i) => `${columns[i]}`);
 
 		let cells = row.selectAll(".cell")
 			.data(d => d)
@@ -78,6 +80,7 @@ class CorrMatrix extends Component {
 			.attr("x", (_, i) => x(`${columns[i]}`))
 			.attr("width", x.bandwidth())
 			.attr("height", y.bandwidth())
+			.attr('secondary-data', (_, i) => `${columns[i]}`)
 			.style("fill", d => colorScale(d))
 			.on('click', this.handlePlotClick);
 		cells.append('text')
@@ -90,16 +93,17 @@ class CorrMatrix extends Component {
 	}
 
 	handlePlotClick = (event) => {
-		const { points } = event;
-		if (points.length > 0) {
-			const { x, y } = points[0];
-			this.props.onCellClick(x, y);
-		}
+		console.log(event)
+		let secondary = event.target.attributes['secondary-data'].value
+		let primary = event.target.parentElement.parentElement.attributes['primary-data'].value
+		console.log(primary)
+		console.log(secondary)
+		this.props.onCellClick(primary.toString(), secondary.toString())
 	};
 
 	render() {
 		return (
-			<svg id='corr_matrix' width="500" height="500"></svg >
+			<svg id='corr_matrix' width="400" height="400"></svg >
 		);
 	}
 }

@@ -27,8 +27,11 @@ class Scatter extends Component {
 			.append("g")
 			.attr("transform", `translate(${margin.left},${margin.top})`);
 
-		const x = d3.scaleLinear().domain([0, 50]).range([0, width]);
-		const xAxis = d3.axisBottom(x).tickValues(d3.range(0, 51, 10));
+		const xData = data.map((d) => parseFloat(d[selectedLabels.x]));
+		const yData = data.map((d) => parseFloat(d[selectedLabels.y]));
+
+		const x = d3.scaleLinear().domain([0, d3.max(xData)]).range([0, width]);
+		const xAxis = d3.axisBottom(x).tickValues(d3.range(0, d3.max(xData), d3.max(xData)/10));
 		svg.append("g").attr("transform", `translate(0, ${height})`).call(xAxis);
 
 		svg.append("text")
@@ -37,8 +40,9 @@ class Scatter extends Component {
 			.attr("y", height + 40)
 			.text(selectedLabels.x);
 
-		const y = d3.scaleLinear().domain([0, 10]).range([height, 0]).nice();
-		const yAxis = d3.axisLeft(y).tickValues(d3.range(2, 11, 2));
+		
+		const y = d3.scaleLinear().domain([0, d3.max(yData)]).range([height, 0]).nice();
+		const yAxis = d3.axisLeft(y).tickValues(d3.range(0, d3.max(yData), d3.max(yData)/10));
 		svg.append("g").call(yAxis);
 
 		svg.append("text")
@@ -48,8 +52,7 @@ class Scatter extends Component {
 			.attr("y", -30)
 			.text(selectedLabels.y);
 
-		const xData = data.map((d) => parseFloat(d[selectedLabels.x]));
-		const yData = data.map((d) => parseFloat(d[selectedLabels.y]));
+		
 
 		svg
 			.selectAll("circle")

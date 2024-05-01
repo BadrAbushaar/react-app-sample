@@ -29,9 +29,8 @@ class App extends Component {
 	}
 
 	handleCellClick = (x, y) => {
-		const { columns } = this.state;
 		this.setState({
-			selectedLabels: { x: columns[x], y: columns[y] },
+			selectedLabels: { x: x, y: y },
 		});
 	};
 
